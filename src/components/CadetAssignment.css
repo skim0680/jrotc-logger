@@ -1,0 +1,105 @@
+.current-assignment {
+  padding: 15px;
+  background: #edf2f7;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.current-assignment h4 {
+  margin: 0 0 10px 0;
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.assigned-cadet-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.assigned-cadet-info span {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.rank-badge {
+  background: #3182ce;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.cadet-search {
+  margin-bottom: 15px;
+}
+
+.cadet-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.cadet-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-bottom: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cadet-item:last-child {
+  border-bottom: none;
+}
+
+.cadet-item:hover {
+  background: #f7fafc;
+}
+
+.cadet-item.assigned {
+  background: #e6fffa;
+  border-left: 3px solid #38a169;
+}
+
+.cadet-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.cadet-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cadet-name {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.cadet-rank {
+  font-size: 0.8rem;
+  color: #3182ce;
+  font-weight: 500;
+}
+
+.assigned-indicator {
+  font-size: 0.8rem;
+  color: #38a169;
+  font-weight: 500;
+  background: #c6f6d5;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.no-cadets {
+  padding: 30px;
+  text-align: center;
+  color: #718096;
+}

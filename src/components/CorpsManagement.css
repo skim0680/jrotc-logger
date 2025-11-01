@@ -1,0 +1,269 @@
+.corps-management {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.corps-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.corps-header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.corps-info h1 {
+  margin: 0;
+  color: #1a365d;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.corps-description {
+  color: #718096;
+  margin: 5px 0 0 0;
+  font-style: italic;
+}
+
+.corps-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.corps-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.corps-name-input {
+  font-size: 1.8rem;
+  font-weight: 700;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: white;
+}
+
+.corps-description-input {
+  font-style: italic;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: white;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.corps-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.stat-item.current-year {
+  background: #ebf8ff;
+  color: #3182ce;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  border: 1px solid #bee3f8;
+}
+
+.corps-content {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 200px);
+}
+
+.corps-nav {
+  min-width: 250px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  height: fit-content;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.nav-btn:hover {
+  background: #e2e8f0;
+}
+
+.nav-btn.active {
+  background: #3182ce;
+  color: white;
+}
+
+.corps-main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #2d3748;
+}
+
+.coc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.coc-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.coc-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.coc-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.coc-card-header h3 {
+  margin: 0;
+  color: #1a365d;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.coc-description {
+  color: #718096;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.coc-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.chain-of-commands-list .empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e0;
+}
+
+.chain-of-commands-list .empty-icon {
+  color: #a0aec0;
+  margin-bottom: 20px;
+}
+
+.chain-of-commands-list .empty-state h3 {
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.chain-of-commands-list .empty-state p {
+  color: #718096;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .corps-content {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .corps-nav {
+    min-width: auto;
+    display: flex;
+    overflow-x: auto;
+    padding: 15px;
+    gap: 10px;
+  }
+  
+  .nav-btn {
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .corps-management {
+    padding: 15px;
+  }
+  
+  .corps-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .corps-stats {
+    align-self: stretch;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .coc-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .corps-nav {
+    padding: 10px;
+  }
+}

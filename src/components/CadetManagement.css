@@ -1,0 +1,462 @@
+.cadet-management {
+  padding: 20px 0;
+}
+
+.cadet-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  flex: 1;
+  max-width: 300px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  background: transparent;
+  color: #2d3748;
+  font-size: 14px;
+}
+
+.cadet-count {
+  color: #718096;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.cadet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.cadet-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.cadet-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.cadet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.cadet-name h3 {
+  margin: 0 0 8px 0;
+  color: #1a365d;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.cadet-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 5px;
+}
+
+.cadet-rank {
+  background: #3182ce;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.grade-badge {
+  background: #38a169;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.as-badge {
+  background: #d69e2e;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.flight-badge {
+  background: #805ad5;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.year-indicator {
+  color: #718096;
+  font-size: 0.8rem;
+  font-weight: normal;
+  margin-left: 5px;
+}
+
+.cadet-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.cadet-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.current-activities {
+  margin: 15px 0;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.semester-activities {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.semester {
+  font-size: 0.85rem;
+  color: #4a5568;
+}
+
+.activity-count {
+  color: #3182ce;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.no-activities {
+  color: #a0aec0;
+  margin-left: 5px;
+}
+
+.cadet-expanded {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.activities-detail {
+  margin-bottom: 20px;
+}
+
+.activities-detail h4 {
+  margin: 0 0 10px 0;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.semester-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.semester-section h5 {
+  margin: 0 0 8px 0;
+  color: #4a5568;
+  font-size: 0.85rem;
+}
+
+.activity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.activity-tag {
+  background: #ebf8ff;
+  color: #3182ce;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  border: 1px solid #bee3f8;
+}
+
+.no-activities-text {
+  color: #a0aec0;
+  font-style: italic;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.yearly-history {
+  margin-bottom: 20px;
+}
+
+.yearly-history h4 {
+  margin: 0 0 15px 0;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.year-record {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.year-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.year-name {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.year-badges {
+  display: flex;
+  gap: 4px;
+}
+
+.grade-badge-small, .as-badge-small, .flight-badge-small {
+  padding: 1px 4px;
+  border-radius: 6px;
+  font-size: 0.6rem;
+  font-weight: 500;
+}
+
+.grade-badge-small {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.as-badge-small {
+  background: #faf089;
+  color: #744210;
+}
+
+.flight-badge-small {
+  background: #e9d8fd;
+  color: #553c9a;
+}
+
+.semester-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.activity-list-small {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.activity-tag-small {
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 1px 4px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+}
+
+.no-activities-small {
+  color: #a0aec0;
+  font-style: italic;
+  margin-left: 5px;
+}
+
+.cadet-notes {
+  background: #f7fafc;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #4a5568;
+  border-left: 3px solid #3182ce;
+  margin-top: 15px;
+}
+
+.no-school-year {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff8e1;
+  border-radius: 12px;
+  border: 2px dashed #f59e0b;
+}
+
+.no-school-year .empty-icon {
+  color: #f59e0b;
+  margin-bottom: 20px;
+}
+
+.no-school-year h3 {
+  color: #92400e;
+  margin-bottom: 10px;
+}
+
+.no-school-year p {
+  color: #a16207;
+  margin-bottom: 20px;
+}
+
+.activities-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3182ce;
+}
+
+.activities-section h4 {
+  margin: 0 0 15px 0;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #718096;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e0;
+}
+
+.empty-icon {
+  color: #a0aec0;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: #718096;
+  margin-bottom: 20px;
+}
+
+/* Modal styles */
+.modal-large {
+  max-width: 700px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-row .form-group {
+  margin-bottom: 0;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cadet-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    max-width: none;
+  }
+  
+  .cadet-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-large {
+    width: 95%;
+    max-width: none;
+  }
+  
+  .cadet-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .cadet-actions {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .cadet-management {
+    padding: 10px 0;
+  }
+  
+  .cadet-card {
+    padding: 15px;
+  }
+}
