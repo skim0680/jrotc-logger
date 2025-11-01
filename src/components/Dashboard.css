@@ -16,11 +16,28 @@
   border-bottom: 2px solid #e0e0e0;
 }
 
+.unit-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.unit-badge {
+  color: #2563eb;
+}
+
 .dashboard-header h1 {
   color: #1a365d;
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
+}
+
+.unit-subtitle {
+  color: #64748b;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .dashboard-actions {

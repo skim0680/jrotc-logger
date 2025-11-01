@@ -6,26 +6,26 @@ import './App.css';
 
 function App() {
   const [currentView, setCurrentView] = useState('dashboard');
-  const [selectedCorps, setSelectedCorps] = useState(null);
+  const [selectedSchoolYear, setSelectedSchoolYear] = useState(null);
 
-  const handleSelectCorps = (corps) => {
-    setSelectedCorps(corps);
-    setCurrentView('corps');
+  const handleSelectSchoolYear = (schoolYear) => {
+    setSelectedSchoolYear(schoolYear);
+    setCurrentView('manage');
   };
 
   const handleBackToDashboard = () => {
     setCurrentView('dashboard');
-    setSelectedCorps(null);
+    setSelectedSchoolYear(null);
   };
 
   return (
     <DataProvider>
       <div className="app">
         {currentView === 'dashboard' ? (
-          <Dashboard onSelectCorps={handleSelectCorps} />
+          <Dashboard onSelectSchoolYear={handleSelectSchoolYear} />
         ) : (
           <CorpsManagement 
-            corps={selectedCorps} 
+            schoolYear={selectedSchoolYear} 
             onBack={handleBackToDashboard} 
           />
         )}

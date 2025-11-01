@@ -3,10 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Initial state
 const initialState = {
-  corps: [],
-  currentCorps: null,
+  schoolYears: [], // Changed: school years are now top level for CA-882
   currentSchoolYear: null,
   currentChainOfCommand: null,
+  unitInfo: {
+    name: 'AFJROTC Unit CA-882',
+    type: 'Air Force JROTC',
+    school: 'Your School Name' // Can be configured later
+  },
   availableActivities: [
     // Leadership & Drill
     'Drill Team', 'Honor Guard', 'Color Guard', 'Leadership Education',
@@ -36,14 +40,12 @@ const initialState = {
 
 // Action types
 const ACTION_TYPES = {
-  SET_CORPS: 'SET_CORPS',
-  ADD_CORPS: 'ADD_CORPS',
-  UPDATE_CORPS: 'UPDATE_CORPS',
-  DELETE_CORPS: 'DELETE_CORPS',
-  SET_CURRENT_CORPS: 'SET_CURRENT_CORPS',
+  // School Year Management (top level for CA-882)
+  SET_SCHOOL_YEARS: 'SET_SCHOOL_YEARS',
   ADD_SCHOOL_YEAR: 'ADD_SCHOOL_YEAR',
-  SET_CURRENT_SCHOOL_YEAR: 'SET_CURRENT_SCHOOL_YEAR',
   UPDATE_SCHOOL_YEAR: 'UPDATE_SCHOOL_YEAR',
+  DELETE_SCHOOL_YEAR: 'DELETE_SCHOOL_YEAR',
+  SET_CURRENT_SCHOOL_YEAR: 'SET_CURRENT_SCHOOL_YEAR',
   ADD_CADET: 'ADD_CADET',
   UPDATE_CADET: 'UPDATE_CADET',
   DELETE_CADET: 'DELETE_CADET',
@@ -96,23 +98,33 @@ function dataReducer(state, action) {
         currentSchoolYear: action.payload?.schoolYears?.[action.payload.schoolYears.length - 1] || null,
       };
 
-    case ACTION_TYPES.ADD_SCHOOL_YEAR:
-      return {
-        ...state,
-        corps: state.corps.map(corps =>
-          corps.id === action.payload.corpsId
-            ? {
-                ...corps,
-                schoolYears: [...corps.schoolYears, action.payload.schoolYear]
-              }
-            : corps
-        ),
-      };
+
 
     case ACTION_TYPES.SET_CURRENT_SCHOOL_YEAR:
       return {
         ...state,
         currentSchoolYear: action.payload,
+      };
+
+    // New CA-882 School Year Cases
+    case ACTION_TYPES.SET_SCHOOL_YEARS:
+      return {
+        ...state,
+        schoolYears: action.payload,
+      };
+
+    case ACTION_TYPES.ADD_SCHOOL_YEAR:
+      return {
+        ...state,
+        schoolYears: [...state.schoolYears, action.payload],
+        currentSchoolYear: action.payload,
+      };
+
+    case ACTION_TYPES.DELETE_SCHOOL_YEAR:
+      return {
+        ...state,
+        schoolYears: state.schoolYears.filter(year => year.id !== action.payload),
+        currentSchoolYear: state.currentSchoolYear?.id === action.payload ? null : state.currentSchoolYear,
       };
 
     case ACTION_TYPES.UPDATE_SCHOOL_YEAR:
@@ -365,11 +377,18 @@ export const DataProvider = ({ children }) => {
 
   // Load data from localStorage on mount
   useEffect(() => {
-    const savedData = localStorage.getItem('jrotc-app-data');
+    const savedData = localStorage.getItem('jrotc-ca882-data');
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
-        dispatch({ type: ACTION_TYPES.SET_CORPS, payload: parsedData.corps || [] });
+        // Handle both old format (corps) and new format (schoolYears)
+        if (parsedData.schoolYears) {
+          dispatch({ type: ACTION_TYPES.SET_SCHOOL_YEARS, payload: parsedData.schoolYears });
+        } else if (parsedData.corps && parsedData.corps.length > 0) {
+          // Migrate old data structure - extract school years from first corps
+          const migrated = parsedData.corps[0]?.schoolYears || [];
+          dispatch({ type: ACTION_TYPES.SET_SCHOOL_YEARS, payload: migrated });
+        }
       } catch (error) {
         console.error('Error loading data from localStorage:', error);
       }
@@ -378,8 +397,11 @@ export const DataProvider = ({ children }) => {
 
   // Save data to localStorage whenever state changes
   useEffect(() => {
-    localStorage.setItem('jrotc-app-data', JSON.stringify({ corps: state.corps }));
-  }, [state.corps]);
+    localStorage.setItem('jrotc-ca882-data', JSON.stringify({ 
+      schoolYears: state.schoolYears,
+      unitInfo: state.unitInfo 
+    }));
+  }, [state.schoolYears]);
 
   // Action creators
   const actions = {
@@ -419,53 +441,7 @@ export const DataProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_CURRENT_CORPS, payload: corps });
     },
 
-    addSchoolYear: (corpsId, startYear, endYear) => {
-      const previousYear = state.corps.find(c => c.id === corpsId)?.schoolYears
-        ?.sort((a, b) => b.startYear - a.startYear)[0];
-      
-      const newSchoolYear = {
-        id: uuidv4(),
-        name: `${startYear}-${endYear}`,
-        startYear,
-        endYear,
-        cadets: [],
-        chainOfCommands: [],
-        isActive: true,
-        createdAt: new Date().toISOString(),
-      };
 
-      // Mark all other years as inactive
-      const corps = state.corps.find(c => c.id === corpsId);
-      if (corps) {
-        corps.schoolYears.forEach(year => {
-          if (year.isActive) {
-            dispatch({ 
-              type: ACTION_TYPES.UPDATE_SCHOOL_YEAR, 
-              payload: { 
-                corpsId, 
-                schoolYear: { ...year, isActive: false } 
-              } 
-            });
-          }
-        });
-      }
-
-      dispatch({
-        type: ACTION_TYPES.ADD_SCHOOL_YEAR,
-        payload: { corpsId, schoolYear: newSchoolYear }
-      });
-
-      // If there was a previous year, promote cadets
-      if (previousYear) {
-        actions.promoteCadetsToNewYear(corpsId, previousYear.id, newSchoolYear.id);
-      }
-
-      return newSchoolYear;
-    },
-
-    setCurrentSchoolYear: (schoolYear) => {
-      dispatch({ type: ACTION_TYPES.SET_CURRENT_SCHOOL_YEAR, payload: schoolYear });
-    },
 
     promoteCadetsToNewYear: (corpsId, fromYearId, toYearId) => {
       const corps = state.corps.find(c => c.id === corpsId);
@@ -599,13 +575,23 @@ export const DataProvider = ({ children }) => {
     },
 
     exportData: () => {
-      return JSON.stringify(state.corps, null, 2);
+      return JSON.stringify({ 
+        schoolYears: state.schoolYears,
+        unitInfo: state.unitInfo,
+        exportDate: new Date().toISOString()
+      }, null, 2);
     },
 
     importData: (jsonData) => {
       try {
-        const importedCorps = JSON.parse(jsonData);
-        dispatch({ type: ACTION_TYPES.SET_CORPS, payload: importedCorps });
+        const imported = JSON.parse(jsonData);
+        if (imported.schoolYears) {
+          dispatch({ type: ACTION_TYPES.SET_SCHOOL_YEARS, payload: imported.schoolYears });
+        } else if (imported.corps) {
+          // Handle old format - migrate
+          const migrated = imported.corps[0]?.schoolYears || [];
+          dispatch({ type: ACTION_TYPES.SET_SCHOOL_YEARS, payload: migrated });
+        }
         return true;
       } catch (error) {
         console.error('Error importing data:', error);
@@ -617,15 +603,50 @@ export const DataProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.UPDATE_AVAILABLE_ACTIVITIES, payload: activities });
     },
 
-    getCurrentYearCadets: (corpsId) => {
-      const corps = state.corps.find(c => c.id === corpsId);
-      const currentYear = corps?.schoolYears?.find(y => y.isActive);
+    // New CA-882 School Year Management Functions
+    addSchoolYear: (yearName) => {
+      const newSchoolYear = {
+        id: uuidv4(),
+        name: yearName,
+        cadets: [],
+        chainOfCommands: [],
+        isActive: true,
+        createdAt: new Date().toISOString(),
+        semesters: [
+          { id: 'fall', name: 'Fall Semester' },
+          { id: 'spring', name: 'Spring Semester' }
+        ]
+      };
+
+      // Mark all other years as inactive
+      state.schoolYears.forEach(year => {
+        if (year.isActive) {
+          dispatch({ 
+            type: ACTION_TYPES.UPDATE_SCHOOL_YEAR, 
+            payload: { ...year, isActive: false } 
+          });
+        }
+      });
+
+      dispatch({ type: ACTION_TYPES.ADD_SCHOOL_YEAR, payload: newSchoolYear });
+      return newSchoolYear;
+    },
+
+    deleteSchoolYear: (yearId) => {
+      dispatch({ type: ACTION_TYPES.DELETE_SCHOOL_YEAR, payload: yearId });
+    },
+
+    setCurrentSchoolYear: (schoolYear) => {
+      dispatch({ type: ACTION_TYPES.SET_CURRENT_SCHOOL_YEAR, payload: schoolYear });
+    },
+
+    getCurrentYearCadets: () => {
+      const currentYear = state.schoolYears.find(y => y.isActive) || state.currentSchoolYear;
       return currentYear?.cadets || [];
     },
 
-    getSchoolYearCadets: (corpsId, schoolYearId) => {
-      const corps = state.corps.find(c => c.id === corpsId);
-      const schoolYear = corps?.schoolYears?.find(y => y.id === schoolYearId);
+    getSchoolYearCadets: (schoolYearId) => {
+      const schoolYear = state.schoolYears.find(y => y.id === schoolYearId);
       return schoolYear?.cadets || [];
     },
   };

@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 import { useData } from '../context/DataContext';
-import { Plus, Users, FileText, Settings, Download, Upload, Calendar } from 'lucide-react';
+import { Plus, Users, FileText, Settings, Download, Upload, Calendar, Award } from 'lucide-react';
 import './Dashboard.css';
 
-const Dashboard = ({ onSelectCorps }) => {
-  const { corps, addCorps, deleteCorps, exportData, importData } = useData();
-  const [showNewCorpsModal, setShowNewCorpsModal] = useState(false);
-  const [newCorpsName, setNewCorpsName] = useState('');
-  const [newCorpsDescription, setNewCorpsDescription] = useState('');
+const Dashboard = ({ onSelectSchoolYear }) => {
+  const { schoolYears, addSchoolYear, deleteSchoolYear, exportData, importData } = useData();
+  const [showNewYearModal, setShowNewYearModal] = useState(false);
+  const [newYearName, setNewYearName] = useState('');
   const [showImportModal, setShowImportModal] = useState(false);
   const [importText, setImportText] = useState('');
 
-  const handleCreateCorps = (e) => {
+  const handleCreateSchoolYear = (e) => {
     e.preventDefault();
-    if (newCorpsName.trim()) {
-      const newCorps = addCorps(newCorpsName.trim(), newCorpsDescription.trim());
-      setNewCorpsName('');
-      setNewCorpsDescription('');
-      setShowNewCorpsModal(false);
-      onSelectCorps(newCorps);
+    if (newYearName.trim()) {
+      const newYear = addSchoolYear(newYearName.trim());
+      setNewYearName('');
+      setShowNewYearModal(false);
+      onSelectSchoolYear(newYear);
     }
   };
 
@@ -48,7 +46,13 @@ const Dashboard = ({ onSelectCorps }) => {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>JROTC Corps Management System</h1>
+        <div className="unit-info">
+          <Award size={32} className="unit-badge" />
+          <div>
+            <h1>AFJROTC Unit CA-882</h1>
+            <p className="unit-subtitle">Cadet Management System</p>
+          </div>
+        </div>
         <div className="dashboard-actions">
           <button 
             className="btn btn-secondary"
@@ -70,70 +74,70 @@ const Dashboard = ({ onSelectCorps }) => {
       </header>
 
       <div className="dashboard-content">
-        {corps.length === 0 ? (
+        {schoolYears.length === 0 ? (
           <div className="empty-state">
-            <Users size={64} className="empty-icon" />
-            <h2>Welcome to JROTC Corps Management</h2>
-            <p>Get started by creating your first corps. You can then add cadets and manage your chain of command.</p>
+            <Calendar size={64} className="empty-icon" />
+            <h2>Welcome to AFJROTC CA-882</h2>
+            <p>Get started by creating your first school year. You can then add cadets and manage your chain of command.</p>
             <button 
               className="btn btn-primary btn-large"
-              onClick={() => setShowNewCorpsModal(true)}
+              onClick={() => setShowNewYearModal(true)}
             >
               <Plus size={20} />
-              Make New Corps
+              Create School Year
             </button>
           </div>
         ) : (
           <>
             <div className="dashboard-toolbar">
-              <h2>Your Corps</h2>
+              <h2>School Years</h2>
               <button 
                 className="btn btn-primary"
-                onClick={() => setShowNewCorpsModal(true)}
+                onClick={() => setShowNewYearModal(true)}
               >
                 <Plus size={16} />
-                Make New Corps
+                Create School Year
               </button>
             </div>
             
             <div className="corps-grid">
-              {corps.map(corp => (
-                <div key={corp.id} className="corps-card">
+              {schoolYears.map(year => (
+                <div key={year.id} className="corps-card">
                   <div className="corps-card-header">
-                    <h3>{corp.name}</h3>
+                    <h3>{year.name}</h3>
                     <button 
                       className="btn btn-danger btn-small"
                       onClick={() => {
-                        if (window.confirm(`Are you sure you want to delete "${corp.name}"?`)) {
-                          deleteCorps(corp.id);
+                        if (window.confirm(`Are you sure you want to delete "${year.name}"?`)) {
+                          deleteSchoolYear(year.id);
                         }
                       }}
-                      title="Delete Corps"
+                      title="Delete School Year"
                     >
                       ×
                     </button>
                   </div>
-                  <p className="corps-description">{corp.description || 'No description'}</p>
+                  <p className="corps-description">Academic Year {year.name}</p>
                   <div className="corps-stats">
                     <span className="stat">
                       <Users size={14} />
-                      {corp.schoolYears?.reduce((total, year) => total + (year.cadets?.length || 0), 0) || 0} Total Cadets
+                      {year.cadets?.length || 0} Cadets
                     </span>
                     <span className="stat">
                       <Calendar size={14} />
-                      {corp.schoolYears?.length || 0} School Years
+                      {year.semesters?.length || 2} Semesters
                     </span>
                   </div>
                   <div className="corps-actions">
                     <button 
                       className="btn btn-primary btn-small"
-                      onClick={() => onSelectCorps(corp)}
+                      onClick={() => onSelectSchoolYear(year)}
                     >
-                      Open Corps
+                      Manage Year
                     </button>
                   </div>
                   <div className="corps-created">
-                    Created: {new Date(corp.createdAt).toLocaleDateString()}
+                    Created: {new Date(year.createdAt).toLocaleDateString()}
                   </div>
                 </div>
               ))}
@@ -142,56 +146,50 @@ const Dashboard = ({ onSelectCorps }) => {
         )}
       </div>
 
-      {/* New Corps Modal */}
-      {showNewCorpsModal && (
+      {/* New School Year Modal */}
+      {showNewYearModal && (
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header">
-              <h3>Create New Corps</h3>
+              <h3>Create New School Year</h3>
               <button 
                 className="btn btn-ghost"
-                onClick={() => setShowNewCorpsModal(false)}
+                onClick={() => setShowNewYearModal(false)}
               >
                 ×
               </button>
             </div>
-            <form onSubmit={handleCreateCorps} className="modal-content">
+            <form onSubmit={handleCreateSchoolYear} className="modal-content">
               <div className="form-group">
-                <label htmlFor="corps-name">Corps Name *</label>
+                <label htmlFor="year-name">School Year *</label>
                 <input
-                  id="corps-name"
+                  id="year-name"
                   type="text"
-                  value={newCorpsName}
-                  onChange={(e) => setNewCorpsName(e.target.value)}
-                  placeholder="Enter corps name"
+                  value={newYearName}
+                  onChange={(e) => setNewYearName(e.target.value)}
+                  placeholder="e.g. 2024-2025"
                   required
                   autoFocus
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="corps-description">Description (Optional)</label>
-                <textarea
-                  id="corps-description"
-                  value={newCorpsDescription}
-                  onChange={(e) => setNewCorpsDescription(e.target.value)}
-                  placeholder="Enter corps description"
-                  rows="3"
-                />
-              </div>
+              <p className="help-text">
+                This will create a new academic year for AFJROTC Unit CA-882. 
+                You can add cadets, manage activities, and build your chain of command.
+              </p>
               <div className="modal-actions">
                 <button 
                   type="button"
                   className="btn btn-secondary"
-                  onClick={() => setShowNewCorpsModal(false)}
+                  onClick={() => setShowNewYearModal(false)}
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit"
                   className="btn btn-primary"
-                  disabled={!newCorpsName.trim()}
+                  disabled={!newYearName.trim()}
                 >
-                  Create Corps
+                  Create School Year
                 </button>
               </div>
             </form>
