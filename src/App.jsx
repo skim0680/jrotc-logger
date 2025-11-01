@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { DataProvider } from './context/DataContext';
+import AuthComponent from './components/AuthComponent';
 import Dashboard from './components/Dashboard';
-import CorpsManagement from './components/CorpsManagement';
+import SchoolYearManagement from './components/SchoolYearManagement2';
+import ChainOfCommandBuilder from './components/ChainOfCommandBuilder';
 import './App.css';
 
 function App() {
@@ -13,24 +15,48 @@ function App() {
     setCurrentView('manage');
   };
 
+  const handleOpenChainOfCommand = (schoolYear) => {
+    setSelectedSchoolYear(schoolYear);
+    setCurrentView('coc-builder');
+  };
+
   const handleBackToDashboard = () => {
     setCurrentView('dashboard');
     setSelectedSchoolYear(null);
   };
 
-  return (
-    <DataProvider>
-      <div className="app">
-        {currentView === 'dashboard' ? (
-          <Dashboard onSelectSchoolYear={handleSelectSchoolYear} />
-        ) : (
-          <CorpsManagement 
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'dashboard':
+        return <Dashboard onSelectSchoolYear={handleSelectSchoolYear} />;
+      case 'manage':
+        return (
+          <SchoolYearManagement 
             schoolYear={selectedSchoolYear} 
-            onBack={handleBackToDashboard} 
+            onBack={handleBackToDashboard}
+            onOpenChainOfCommand={() => handleOpenChainOfCommand(selectedSchoolYear)}
           />
-        )}
-      </div>
-    </DataProvider>
+        );
+      case 'coc-builder':
+        return (
+          <ChainOfCommandBuilder 
+            schoolYear={selectedSchoolYear} 
+            onBack={handleBackToDashboard}
+          />
+        );
+      default:
+        return <Dashboard onSelectSchoolYear={handleSelectSchoolYear} />;
+    }
+  };
+
+  return (
+    <AuthComponent>
+      <DataProvider>
+        <div className="app">
+          {renderCurrentView()}
+        </div>
+      </DataProvider>
+    </AuthComponent>
   );
 }
 

@@ -1,0 +1,248 @@
+.auth-loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+  color: white;
+}
+
+.loading-spinner {
+  text-align: center;
+}
+
+.loading-spinner h2 {
+  margin: 16px 0 8px 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.loading-spinner p {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Sign In Page */
+.auth-signin {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+  color: white;
+  padding: 20px;
+}
+
+.signin-container {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.unit-branding {
+  margin-bottom: 40px;
+}
+
+.unit-branding h1 {
+  margin: 16px 0 8px 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.unit-branding p {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.signin-content {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 40px 30px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.signin-content h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.signin-content p {
+  margin: 0 0 30px 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.error-message p {
+  margin: 0;
+  color: #fecaca;
+  font-size: 14px;
+}
+
+.btn-google {
+  width: 100%;
+  background: white;
+  color: #1f2937;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 30px;
+}
+
+.btn-google:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-google:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.signin-info {
+  text-align: left;
+}
+
+.signin-info h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.signin-info ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.signin-info li {
+  padding: 4px 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Authenticated App */
+.authenticated-app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: rgba(30, 58, 138, 0.95);
+  color: white;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-role {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.app-main {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signin-container {
+    max-width: 350px;
+  }
+  
+  .signin-content {
+    padding: 30px 20px;
+  }
+  
+  .unit-branding h1 {
+    font-size: 1.8rem;
+  }
+  
+  .app-header {
+    padding: 12px 16px;
+  }
+  
+  .header-left span {
+    display: none;
+  }
+  
+  .user-name {
+    display: none;
+  }
+}

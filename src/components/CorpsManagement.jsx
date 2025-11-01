@@ -7,14 +7,13 @@ import SchoolYearManagement from './SchoolYearManagement';
 import ActivityConfiguration from './ActivityConfiguration';
 import './CorpsManagement.css';
 
-const CorpsManagement = ({ corps, onBack }) => {
+const CorpsManagement = ({ schoolYear, onBack, onOpenChainOfCommand }) => {
   const { 
-    updateCorps, 
+    updateSchoolYear, 
     addChainOfCommand, 
     deleteChainOfCommand, 
     setCurrentChainOfCommand,
     currentChainOfCommand,
-    currentSchoolYear,
     setCurrentSchoolYear
   } = useData();
   
