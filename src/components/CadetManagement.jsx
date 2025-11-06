@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../context/DataContext';
-import { Plus, Edit, Trash2, Search, User, Phone, Mail, Calendar, ChevronDown, ChevronUp, Award } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, User, Mail, ChevronDown, ChevronUp, Award } from 'lucide-react';
 import ActivitySelector from './ActivitySelector';
 import './CadetManagement.css';
 
@@ -17,11 +17,6 @@ const CadetManagement = ({ corps, currentSchoolYear }) => {
     asLevel: 1,
     flight: '',
     email: '',
-    phone: '',
-    dateJoined: '',
-    dateOfBirth: '',
-    emergencyContact: '',
-    emergencyPhone: '',
     notes: '',
     semester1Activities: [],
     semester2Activities: []
@@ -55,11 +50,6 @@ const CadetManagement = ({ corps, currentSchoolYear }) => {
       asLevel: 1,
       flight: '',
       email: '',
-      phone: '',
-      dateJoined: '',
-      dateOfBirth: '',
-      emergencyContact: '',
-      emergencyPhone: '',
       notes: '',
       semester1Activities: [],
       semester2Activities: []
@@ -82,11 +72,6 @@ const CadetManagement = ({ corps, currentSchoolYear }) => {
       asLevel: cadet.asLevel || 1,
       flight: cadet.flight || '',
       email: cadet.email || '',
-      phone: cadet.phone || '',
-      dateJoined: cadet.dateJoined || '',
-      dateOfBirth: cadet.dateOfBirth || '',
-      emergencyContact: cadet.emergencyContact || '',
-      emergencyPhone: cadet.emergencyPhone || '',
       notes: cadet.notes || '',
       semester1Activities: cadet.semester1Activities || [],
       semester2Activities: cadet.semester2Activities || []
@@ -98,14 +83,14 @@ const CadetManagement = ({ corps, currentSchoolYear }) => {
     e.preventDefault();
     if (cadetForm.firstName.trim() && cadetForm.lastName.trim() && currentSchoolYear) {
       if (editingCadet) {
-        updateCadet(corps.id, currentSchoolYear.id, {
+        updateCadet(currentSchoolYear.id, {
           ...editingCadet,
           ...cadetForm,
           firstName: cadetForm.firstName.trim(),
           lastName: cadetForm.lastName.trim()
         });
       } else {
-        addCadet(corps.id, currentSchoolYear.id, {
+        addCadet(currentSchoolYear.id, {
           ...cadetForm,
           firstName: cadetForm.firstName.trim(),
           lastName: cadetForm.lastName.trim()
@@ -119,7 +104,7 @@ const CadetManagement = ({ corps, currentSchoolYear }) => {
 
   const handleDelete = (cadet) => {
     if (window.confirm(`Are you sure you want to delete ${cadet.firstName} ${cadet.lastName}?`)) {
-      deleteCadet(corps.id, currentSchoolYear.id, cadet.id);
+      deleteCadet(currentSchoolYear.id, cadet.id);
     }
   };
 
@@ -226,18 +211,6 @@ const CadetManagement = ({ corps, currentSchoolYear }) => {
                   <div className="info-item">
                     <Mail size={14} />
                     <span>{cadet.email}</span>
-                  </div>
-                )}
-                {cadet.phone && (
-                  <div className="info-item">
-                    <Phone size={14} />
-                    <span>{cadet.phone}</span>
-                  </div>
-                )}
-                {cadet.dateJoined && (
-                  <div className="info-item">
-                    <Calendar size={14} />
-                    <span>Joined: {new Date(cadet.dateJoined).toLocaleDateString()}</span>
                   </div>
                 )}
               </div>
@@ -456,67 +429,13 @@ const CadetManagement = ({ corps, currentSchoolYear }) => {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="dateJoined">Date Joined</label>
-                  <input
-                    id="dateJoined"
-                    type="date"
-                    value={cadetForm.dateJoined}
-                    onChange={(e) => setCadetForm({...cadetForm, dateJoined: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="email">Email (Optional)</label>
                   <input
                     id="email"
                     type="email"
                     value={cadetForm.email}
                     onChange={(e) => setCadetForm({...cadetForm, email: e.target.value})}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    value={cadetForm.phone}
-                    onChange={(e) => setCadetForm({...cadetForm, phone: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="dateOfBirth">Date of Birth</label>
-                  <input
-                    id="dateOfBirth"
-                    type="date"
-                    value={cadetForm.dateOfBirth}
-                    onChange={(e) => setCadetForm({...cadetForm, dateOfBirth: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="emergencyContact">Emergency Contact</label>
-                  <input
-                    id="emergencyContact"
-                    type="text"
-                    value={cadetForm.emergencyContact}
-                    onChange={(e) => setCadetForm({...cadetForm, emergencyContact: e.target.value})}
-                    placeholder="Contact name"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="emergencyPhone">Emergency Phone</label>
-                  <input
-                    id="emergencyPhone"
-                    type="tel"
-                    value={cadetForm.emergencyPhone}
-                    onChange={(e) => setCadetForm({...cadetForm, emergencyPhone: e.target.value})}
+                    placeholder="Cadet's email address"
                   />
                 </div>
               </div>

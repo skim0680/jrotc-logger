@@ -145,18 +145,11 @@ function dataReducer(state, action) {
     case ACTION_TYPES.ADD_CADET:
       return {
         ...state,
-        corps: state.corps.map(corps =>
-          corps.id === action.payload.corpsId
+        schoolYears: state.schoolYears.map(year =>
+          year.id === action.payload.schoolYearId
             ? {
-                ...corps,
-                schoolYears: corps.schoolYears.map(year =>
-                  year.id === action.payload.schoolYearId
-                    ? {
-                        ...year,
-                        cadets: [...(year.cadets || []), action.payload.cadet]
-                      }
-                    : year
-                )
+                ...year,
+                cadets: [...(year.cadets || []), action.payload.cadet]
               }
             : corps
         ),
@@ -165,42 +158,28 @@ function dataReducer(state, action) {
     case ACTION_TYPES.UPDATE_CADET:
       return {
         ...state,
-        corps: state.corps.map(corps =>
-          corps.id === action.payload.corpsId
+        schoolYears: state.schoolYears.map(year =>
+          year.id === action.payload.schoolYearId
             ? {
-                ...corps,
-                schoolYears: corps.schoolYears.map(year =>
-                  year.id === action.payload.schoolYearId
-                    ? {
-                        ...year,
-                        cadets: year.cadets.map(cadet =>
-                          cadet.id === action.payload.cadet.id ? action.payload.cadet : cadet
-                        )
-                      }
-                    : year
+                ...year,
+                cadets: year.cadets.map(cadet =>
+                  cadet.id === action.payload.cadet.id ? action.payload.cadet : cadet
                 )
               }
-            : corps
+            : year
         ),
       };
 
     case ACTION_TYPES.DELETE_CADET:
       return {
         ...state,
-        corps: state.corps.map(corps =>
-          corps.id === action.payload.corpsId
+        schoolYears: state.schoolYears.map(year =>
+          year.id === action.payload.schoolYearId
             ? {
-                ...corps,
-                schoolYears: corps.schoolYears.map(year =>
-                  year.id === action.payload.schoolYearId
-                    ? {
-                        ...year,
-                        cadets: year.cadets.filter(cadet => cadet.id !== action.payload.cadetId)
-                      }
-                    : year
-                )
+                ...year,
+                cadets: year.cadets.filter(cadet => cadet.id !== action.payload.cadetId)
               }
-            : corps
+            : year
         ),
       };
 
@@ -478,7 +457,7 @@ export const DataProvider = ({ children }) => {
       });
     },
 
-    addCadet: (corpsId, schoolYearId, cadetData) => {
+    addCadet: (schoolYearId, cadetData) => {
       const newCadet = {
         id: uuidv4(),
         ...cadetData,
@@ -492,22 +471,22 @@ export const DataProvider = ({ children }) => {
       };
       dispatch({
         type: ACTION_TYPES.ADD_CADET,
-        payload: { corpsId, schoolYearId, cadet: newCadet }
+        payload: { schoolYearId, cadet: newCadet }
       });
       return newCadet;
     },
 
-    updateCadet: (corpsId, schoolYearId, cadet) => {
+    updateCadet: (schoolYearId, cadet) => {
       dispatch({
         type: ACTION_TYPES.UPDATE_CADET,
-        payload: { corpsId, schoolYearId, cadet }
+        payload: { schoolYearId, cadet }
       });
     },
 
-    deleteCadet: (corpsId, schoolYearId, cadetId) => {
+    deleteCadet: (schoolYearId, cadetId) => {
       dispatch({
         type: ACTION_TYPES.DELETE_CADET,
-        payload: { corpsId, schoolYearId, cadetId }
+        payload: { schoolYearId, cadetId }
       });
     },
 

@@ -3,7 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  background: linear-gradient(135deg, #4a90e2 0%, #2e82db 100%);
   color: white;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .template-select option {
-  background: #0891b2;
+  background: #2e82db;
   color: white;
 }
 
@@ -293,12 +293,12 @@
 }
 
 .edit-position-btn {
-  background: rgba(8, 145, 178, 0.1);
-  color: #0891b2;
+  background: rgba(46, 130, 219, 0.1);
+  color: #2e82db;
 }
 
 .edit-position-btn:hover {
-  background: #0891b2;
+  background: #2e82db;
   color: white;
 }
 
@@ -519,8 +519,8 @@
 
 .form-input:focus, .form-select:focus {
   outline: none;
-  border-color: #0891b2;
-  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+  border-color: #2e82db;
+  box-shadow: 0 0 0 3px rgba(46, 130, 219, 0.1);
 }
 
 .modal-actions {
@@ -552,7 +552,7 @@
 .btn-primary {
   padding: 10px 20px;
   border: none;
-  background: #0891b2;
+  background: #2e82db;
   color: white;
   border-radius: 6px;
   font-size: 14px;
@@ -580,7 +580,7 @@
   text-align: center;
   margin-bottom: 16px;
   padding: 8px 16px;
-  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  background: linear-gradient(135deg, #4a90e2 0%, #2e82db 100%);
   color: white;
   border-radius: 8px;
   font-weight: 700;
@@ -783,9 +783,9 @@
 }
 
 .empty-position:hover {
-  border-color: #0891b2;
-  background: rgba(8, 145, 178, 0.05);
-  color: #0891b2;
+  border-color: #2e82db;
+  background: rgba(46, 130, 219, 0.05);
+  color: #2e82db;
 }
 
 .empty-icon {
@@ -799,8 +799,8 @@
 
 /* Drag and Drop States */
 .position-card.drag-over {
-  border-color: #0891b2;
-  background: rgba(8, 145, 178, 0.1);
+  border-color: #2e82db;
+  background: rgba(46, 130, 219, 0.1);
   transform: scale(1.02);
 }
 
