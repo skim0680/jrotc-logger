@@ -43,7 +43,7 @@ const firebaseConfig = {
   projectId: "your-project-id",
   storageBucket: "your-project.appspot.com",
   messagingSenderId: "123456789",
-  appId: "your-app-id"
+  appId: "your-app-id",
 };
 ```
 
@@ -60,7 +60,7 @@ const firebaseConfig = {
   projectId: "your-actual-project-id",
   storageBucket: "your-actual-bucket.appspot.com",
   messagingSenderId: "your-actual-sender-id",
-  appId: "your-actual-app-id"
+  appId: "your-actual-app-id",
 };
 ```
 
@@ -76,15 +76,15 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
+
     // AFJROTC CA-882 data - authenticated users only
     match /{collection}/{document} {
       allow read, write: if request.auth != null;
     }
-    
+
     // More secure alternative (requires admin approval):
     // match /{collection}/{document} {
-    //   allow read, write: if request.auth != null && 
+    //   allow read, write: if request.auth != null &&
     //     exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
     //     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.approved == true;
     // }

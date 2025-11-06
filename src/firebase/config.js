@@ -3,15 +3,15 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore, enableNetwork, disableNetwork } from 'firebase/firestore';
 
-// Your Firebase config (replace with your actual config from Firebase Console)
+// Your Firebase config - AFJROTC CA-882 Project
 const firebaseConfig = {
-  // Replace these with your actual Firebase project credentials
-  apiKey: "your-api-key-here",
-  authDomain: "afjrotc-ca882.firebaseapp.com", 
+  apiKey: "AIzaSyDqmP2WyVxcA3kyONaz9lYcX14MtCIL9-k",
+  authDomain: "afjrotc-ca882.firebaseapp.com",
   projectId: "afjrotc-ca882",
-  storageBucket: "afjrotc-ca882.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "your-app-id-here"
+  storageBucket: "afjrotc-ca882.firebasestorage.app",
+  messagingSenderId: "605358215031",
+  appId: "1:605358215031:web:744c15470e5c1edf995b72",
+  measurementId: "G-30TGF7ZL7D"
 };
 
 // Initialize Firebase
