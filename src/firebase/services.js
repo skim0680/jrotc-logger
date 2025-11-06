@@ -7,6 +7,7 @@ import {
   addDoc, 
   updateDoc, 
   deleteDoc, 
+  setDoc,
   onSnapshot,
   query,
   where,
@@ -220,18 +221,25 @@ export const activityService = {
 export const userService = {
   // Get or create user profile
   async getOrCreate(uid, userData) {
-    const userRef = doc(db, COLLECTIONS.USERS, uid);
-    const userSnap = await getDoc(userRef);
-    
-    if (userSnap.exists()) {
-      return { id: uid, ...userSnap.data() };
-    } else {
-      // Create new user
-      await updateDoc(userRef, {
-        ...userData,
-        createdAt: serverTimestamp(),
-        lastLogin: serverTimestamp()
-      });
+    try {
+      const userRef = doc(db, COLLECTIONS.USERS, uid);
+      const userSnap = await getDoc(userRef);
+      
+      if (userSnap.exists()) {
+        return { id: uid, ...userSnap.data() };
+      } else {
+        // Create new user with setDoc instead of updateDoc
+        const newUser = {
+          ...userData,
+          createdAt: serverTimestamp(),
+          lastLogin: serverTimestamp()
+        };
+        await setDoc(userRef, newUser);
+        return { id: uid, ...userData };
+      }
+    } catch (error) {
+      console.error('Error creating user profile:', error);
+      // Return basic user data even if Firestore fails
       return { id: uid, ...userData };
     }
   },
