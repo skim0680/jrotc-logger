@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
   color: white;
 }
 
@@ -23,6 +23,24 @@
   opacity: 0.8;
 }
 
+.btn-retry {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-retry:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
 /* Sign In Page */
 .auth-signin {
   width: 100vw;
@@ -30,7 +48,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
   color: white;
   padding: 20px;
 }

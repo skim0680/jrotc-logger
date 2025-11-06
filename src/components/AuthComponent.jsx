@@ -9,11 +9,25 @@ const AuthComponent = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [authTimeout, setAuthTimeout] = useState(false);
 
   useEffect(() => {
+    // Set a timeout for auth loading
+    const timeoutId = setTimeout(() => {
+      if (loading) {
+        console.log('Auth timeout reached');
+        setAuthTimeout(true);
+        setLoading(false);
+      }
+    }, 10000); // 10 second timeout
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      clearTimeout(timeoutId);
+      console.log('Auth state changed:', firebaseUser ? 'User signed in' : 'User signed out');
+      
       if (firebaseUser) {
         try {
+          console.log('Creating/getting user profile...');
           // Get or create user profile in Firestore
           const userProfile = await userService.getOrCreate(firebaseUser.uid, {
             email: firebaseUser.email,
@@ -23,28 +37,49 @@ const AuthComponent = ({ children }) => {
             unit: 'CA-882',
             lastLogin: new Date().toISOString()
           });
+          console.log('User profile loaded:', userProfile);
           setUser({ ...firebaseUser, profile: userProfile });
+          setError(null); // Clear any previous errors
         } catch (error) {
           console.error('Error creating user profile:', error);
-          setError('Failed to load user profile');
+          setError(`Failed to load user profile: ${error.message}`);
+          // Still set the user even if profile creation fails
+          setUser(firebaseUser);
         }
       } else {
         setUser(null);
+        setError(null);
       }
       setLoading(false);
+      setAuthTimeout(false);
     });
 
-    return () => unsubscribe();
-  }, []);
+    return () => {
+      clearTimeout(timeoutId);
+      unsubscribe();
+    };
+  }, [loading]);
 
   const signInWithGoogle = async () => {
     try {
       setLoading(true);
       setError(null);
-      await signInWithPopup(auth, googleProvider);
+      console.log('Starting Google sign in...');
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Sign in successful:', result.user.email);
     } catch (error) {
       console.error('Sign in error:', error);
-      setError('Failed to sign in. Please try again.');
+      let errorMessage = 'Failed to sign in. Please try again.';
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = 'Sign in was cancelled. Please try again.';
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (error.code === 'auth/unauthorized-domain') {
+        errorMessage = 'This domain is not authorized for authentication.';
+      }
+      
+      setError(errorMessage);
       setLoading(false);
     }
   };
@@ -58,13 +93,36 @@ const AuthComponent = ({ children }) => {
     }
   };
 
-  if (loading) {
+  if (loading || authTimeout) {
     return (
       <div className="auth-loading">
         <div className="loading-spinner">
           <Shield size={48} />
           <h2>AFJROTC Unit CA-882</h2>
-          <p>Loading...</p>
+          {authTimeout ? (
+            <div>
+              <p>Authentication is taking longer than expected...</p>
+              <button 
+                className="btn btn-retry"
+                onClick={() => {
+                  setAuthTimeout(false);
+                  setLoading(true);
+                  setError(null);
+                  // Force a refresh of auth state
+                  window.location.reload();
+                }}
+              >
+                Retry Loading
+              </button>
+            </div>
+          ) : (
+            <p>Loading...</p>
+          )}
+          {error && (
+            <div className="error-message">
+              <p>{error}</p>
+            </div>
+          )}
         </div>
       </div>
     );
