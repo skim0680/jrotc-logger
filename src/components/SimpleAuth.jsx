@@ -2,37 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase/config';
 import { userService } from '../firebase/services';
-import { LogIn, LogOut, Shield, AlertCircle } from 'lucide-react';
+import { LogIn, LogOut, Shield, AlertCircle, Clock, CheckCircle } from 'lucide-react';
 
 function AuthComponent({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [accessStatus, setAccessStatus] = useState(null); // 'pending', 'approved', 'denied'
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       try {
         if (firebaseUser) {
-          // Create/update user profile
+          // Create/update user profile with access control
           const userProfile = await userService.getOrCreate(firebaseUser.uid, {
             email: firebaseUser.email,
             displayName: firebaseUser.displayName,
             photoURL: firebaseUser.photoURL,
             role: 'cadet',
             unit: 'CA-882',
+            accessStatus: 'pending', // New users need approval
+            requestedAt: new Date().toISOString(),
             lastLogin: new Date().toISOString()
           });
           
           setUser({ ...firebaseUser, profile: userProfile });
+          setAccessStatus(userProfile.accessStatus || 'pending');
         } else {
           setUser(null);
+          setAccessStatus(null);
         }
         setError(null);
       } catch (err) {
         console.error('Auth error:', err);
         setError('Authentication failed. Please try again.');
         // Still set user even if profile creation fails
-        if (firebaseUser) setUser(firebaseUser);
+        if (firebaseUser) {
+          setUser(firebaseUser);
+          setAccessStatus('pending');
+        }
       } finally {
         setLoading(false);
       }
@@ -111,7 +119,67 @@ function AuthComponent({ children }) {
     );
   }
 
-  // Authenticated - render children with user info header
+  // Check access status
+  if (user && accessStatus !== 'approved') {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'var(--primary-gradient)' }}>
+        <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md text-center">
+          <div className="mb-6">
+            {accessStatus === 'pending' && <Clock size={48} className="mx-auto mb-4 text-warning-500" />}
+            {accessStatus === 'denied' && <AlertCircle size={48} className="mx-auto mb-4 text-error-500" />}
+            
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              {accessStatus === 'pending' ? 'Access Pending' : 'Access Denied'}
+            </h1>
+            
+            <div className="mb-4">
+              {user.photoURL && (
+                <img
+                  src={user.photoURL}
+                  alt={user.displayName}
+                  className="w-16 h-16 rounded-full mx-auto mb-3"
+                />
+              )}
+              <p className="font-medium text-gray-900">{user.displayName}</p>
+              <p className="text-sm text-gray-600">{user.email}</p>
+            </div>
+            
+            {accessStatus === 'pending' && (
+              <div>
+                <p className="text-gray-600 mb-4">
+                  Your access request has been submitted and is awaiting approval from an instructor.
+                </p>
+                <p className="text-sm text-gray-500">
+                  You'll receive access once an instructor approves your request. Please contact your AFJROTC instructor if you need immediate access.
+                </p>
+              </div>
+            )}
+            
+            {accessStatus === 'denied' && (
+              <div>
+                <p className="text-gray-600 mb-4">
+                  Your access request has been denied.
+                </p>
+                <p className="text-sm text-gray-500">
+                  Please contact your AFJROTC instructor for more information.
+                </p>
+              </div>
+            )}
+          </div>
+          
+          <button
+            onClick={handleSignOut}
+            className="btn btn-secondary w-full"
+          >
+            <LogOut size={20} />
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Authenticated and approved - render children with user info header
   return (
     <div className="min-h-screen bg-gray-50">
       {/* User Header */}
